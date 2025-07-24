@@ -169,7 +169,11 @@ namespace physsim
         double spring_norm         = (endPos - startPos).norm();
 
         // TODO: compute force
+        Eigen::Vector3f f = -stiffness * (spring_norm - L ) * spring_dir - damping * endVel + mass * gravity;
 
         // TODO: add to acceleration
+
+        endAcc += f / mass;
+        accelerations->setValue((endPoint.y() * mResolution.x() + endPoint.x()), endAcc);
     }
 }
