@@ -15,6 +15,10 @@ namespace physsim
     double Dispersion::phaseSpeed(double waveNumber) const
     {
         // TODO: compute the phase speed c_p for the given wave number!
-        return 0;
+        double g_term = gravity / waveNumber  + (surfaceTension / density) * waveNumber;
+        double tan_h = std::tanh(waveNumber * depth);
+
+
+        return std::sqrt(g_term * tan_h);
     }
 }
