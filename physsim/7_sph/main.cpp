@@ -387,7 +387,7 @@ namespace physsim
             for (Eigen::Index i = 0; i < mPositions->getSize(); ++i)
             {
                 // TODO: compute pressure p_i from mDensities, using mStiffness (k), mRho0 (rest density) and mExponent (gamma).
-                float pi = 0; // ... set correct value
+                float pi =  mStiffness * (std::pow(mDensities->getValue(i).x() / mRho0, mExponent) - 1.0f); // ... set correct value
                 mPressures->setValue(i, pi);
             }
 
@@ -417,8 +417,11 @@ namespace physsim
                         float massj        = mMasses->getValue(n.first).x();
 
                         // TODO: pressure acceleration
+                        ai_p += -massj * ((pi / (rhoi * rhoi)) + (pj / (rhoj * rhoj))) * W.gradW(xi - xj); 
 
                         // TODO: viscosity acceleration
+                        ai_p += mViscosity * (massj / rhoj) * (vi - vj).dot(xi - xj) / (((xi -xj).squaredNorm()) + 0.0001f) * W.gradW(xi - xj);
+                    
                     }
                 }
 
@@ -433,8 +436,11 @@ namespace physsim
                         float massk        = mBoundaryMasses->getValue(n.first).x();
 
                         // TODO: pressure acceleration (Akinci)
+                        ai_p += -massk* ((pk/ (rhoi * rhoi)) + (pk / (rhok * rhok))) * W.gradW(xi - xk);
 
                         // TODO: viscosity acceleration (Akinci)
+                        ai_p += mViscosity * (massk / rhok) * vi.dot(xi - xk) / (((xi -xk).squaredNorm())+ 0.0001f) * W.gradW(xi - xk);
+                   
                     }
                 }
 
