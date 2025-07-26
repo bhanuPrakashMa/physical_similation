@@ -169,11 +169,26 @@ namespace physsim
 
             case EMethod::ExplicitEuler:
                 // TODO: explicit euler
+
+                x += mStepSize * v;
+                v += mStepSize * a;
+
+                mSpring.endVelocity = v;
+                mSpring.endPosition = x;
+
+
                 break;
 
             case EMethod::SymplecticEuler:
                 // TODO: symplectic euler
+
+                v += mStepSize * a;
+                x += mStepSize * v;
+                mSpring.endVelocity = v;
+                mSpring.endPosition = x;
+
                 break;
+
 
             case EMethod::ExplicitRK2:
             {
