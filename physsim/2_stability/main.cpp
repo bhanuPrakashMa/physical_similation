@@ -193,12 +193,20 @@ namespace physsim
             case EMethod::ExplicitRK2:
             {
                 // TODO: explicit second-order Runge-Kutta
+                v += mStepSize * a;
+                x += mStepSize * v;
+                mSpring.endVelocity = v;
+                mSpring.endPosition = x;
                 break;
             }
 
             case EMethod::ImplicitEuler:
             {
                 // TODO: implicit euler
+                v += mStepSize * a;
+                x += mStepSize * v;
+                mSpring.endVelocity = v;
+                mSpring.endPosition = x;
                 break;
             }
             }
